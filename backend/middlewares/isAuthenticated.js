@@ -7,17 +7,26 @@ const isAuthenticated = async (req, res, next) => {
             return res.status(401).json({
                 message: "User not authenticated",
                 success: false,
-            })
+            });
         }
-        const decode = await jwt.verify(token, process.env.SECRET_KEY);
-        if(!decode){
+
+        // Decode and verify token
+        try {
+            const decode = await jwt.verify(token, process.env.SECRET_KEY);
+            req.id = decode.userId;  // Add userId to request object
+            next();
+        } catch (error) {
+            if (error.name === "TokenExpiredError") {
+                return res.status(401).json({
+                    message: "Token has expired",
+                    success: false,
+                });
+            }
             return res.status(401).json({
-                message:"Invalid token",
-                success:false
-            })
-        };
-        req.id = decode.userId;
-        next();
+                message: "Invalid token",
+                success: false,
+            });
+        }
     } catch (error) {
         console.log("Error in authentication middleware:", error);
         return res.status(500).json({
@@ -25,5 +34,5 @@ const isAuthenticated = async (req, res, next) => {
             success: false,
         });
     }
-}
+};
 export default isAuthenticated;

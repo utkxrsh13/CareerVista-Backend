@@ -32,7 +32,8 @@ const Login = () => {
             dispatch(setLoading(true));
             const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
                 headers: {
-                    "Content-Type": "application/json"
+                    "Content-Type": "application/json",
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`
                 },
                 withCredentials: true,
             });
