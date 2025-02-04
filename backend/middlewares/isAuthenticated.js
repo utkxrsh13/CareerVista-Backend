@@ -1,7 +1,11 @@
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser"; // Ensure cookie-parser is imported
 
 const isAuthenticated = async (req, res, next) => {
     try {
+        // Log cookies to check if they are being received
+        console.log("Cookies: ", req.cookies);
+
         const token = req.cookies.token;
         if (!token) {
             return res.status(401).json({
@@ -35,4 +39,5 @@ const isAuthenticated = async (req, res, next) => {
         });
     }
 };
+
 export default isAuthenticated;
