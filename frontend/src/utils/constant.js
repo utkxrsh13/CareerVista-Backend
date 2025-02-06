@@ -1,4 +1,4 @@
-const BASE_URL = "https://careervista-backend.onrender.com/api/v1";
+const BASE_URL = "http://localhost:8000/api/v1";
 
 export const USER_API_END_POINT = `${BASE_URL}/user`;
 export const JOB_API_END_POINT = `${BASE_URL}/job`;

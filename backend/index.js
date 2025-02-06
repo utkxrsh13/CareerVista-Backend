@@ -17,7 +17,7 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-    origin:'https://career-vista-backend.vercel.app',
+    origin:'*',
     credentials:true
 }
 
