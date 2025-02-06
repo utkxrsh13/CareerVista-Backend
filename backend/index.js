@@ -17,12 +17,12 @@ app.use(express.json());
 app.use(express.urlencoded({extended:true}));
 app.use(cookieParser());
 const corsOptions = {
-    origin: process.env.FRONTEND_URL || 'http://localhost:8000',
+    origin: 'https://career-vista-backend.vercel.app',
     credentials: true,
-
-}
-
+    allowedHeaders: ['Content-Type', 'Authorization'],
+};
 app.use(cors(corsOptions));
+
 
 const PORT = process.env.PORT || 3000;
 
