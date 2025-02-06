@@ -93,12 +93,18 @@ export const login = async (req, res) => {
             
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true, sameSite: 'strict' }).json({
-            message: `Welcome back ${user.fullname}`,
+        return res.status(200).cookie("token", token, {
+            maxAge: 24 * 60 * 60 * 1000, // 1 day in milliseconds
+            httpOnly: true,             // Ensure the cookie is not accessible via client-side JavaScript
+            secure: process.env.NODE_ENV === "production", // Set to true in production for HTTPS
+            sameSite: "Strict"          // Helps prevent CSRF attacks; "Lax" is also a valid option
+          }).json({
+            success: true,
+            message: "Login successful",
             user,
             token,
-            success: true
-        })
+          });
+          
     } catch (error) {
         console.log(error);
     }
