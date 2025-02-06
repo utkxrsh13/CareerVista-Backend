@@ -30,25 +30,31 @@ const Login = () => {
         e.preventDefault();
         try {
             dispatch(setLoading(true));
+            const token = localStorage.getItem('token');
+            const headers = {
+                "Content-Type": "application/json",
+                ...(token && { 'Authorization': `Bearer ${token}` })
+            };
+    
             const res = await axios.post(`${USER_API_END_POINT}/login`, input, {
-                headers: {
-                    "Content-Type": "application/json",
-                    'Authorization': `Bearer ${localStorage.getItem('token')}`
-                },
+                headers,
                 withCredentials: true,
             });
+    
             if (res.data.success) {
                 dispatch(setUser(res.data.user));
+                localStorage.setItem('token', res.data.token); // Store token on login success
                 navigate("/");
                 toast.success(res.data.message);
             }
         } catch (error) {
             console.log(error);
-            toast.error(error.response.data.message);
+            toast.error(error.response?.data?.message || "Something went wrong");
         } finally {
             dispatch(setLoading(false));
         }
-    }
+    };
+    
     useEffect(()=>{
         if(user){
             navigate("/");
